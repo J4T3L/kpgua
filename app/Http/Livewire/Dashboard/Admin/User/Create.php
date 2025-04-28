@@ -57,7 +57,7 @@ class Create extends Component
         $validatedData['password'] = bcrypt($this->password);
 
         if ($this->avatar) {
-            $validatedData['avatar'] = $this->avatar->store('img/avatar/upload');
+            $validatedData['avatar'] = $this->avatar->store('img/avatar/upload', 'public');
         } else {
             $validatedData['avatar'] = 'img/avatar/' . substr($this->name, 0, 1) . '.png';
         }

@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="mt-8 space-y-4">
-        <h2 class="text-gray-800 text-xl font-['poppins'] font-bold capitalize">About Hollux</h2>
+        <h2 class="text-gray-800 text-xl font-['poppins'] font-bold capitalize">About This</h2>
         <div class="grid md:grid-cols-2 items-start gap-x-10 gap-y-4">
             <div class="bg-gray-50 p-6 rounded-tr-xl rounded-bl-xl space-y-4">
                 <div class="aspect-[16/9] rounded-tr-2xl rounded-bl-2xl overflow-hidden">

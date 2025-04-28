@@ -6,6 +6,7 @@ use App\Models\Room;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -21,14 +22,15 @@ class Index extends Component
     public function render()
     {
         return view('livewire.dashboard.admin.room.index', [
-            'rooms' => Room::filter(['search' => $this->search])->latest()->paginate(10)
+            'rooms' => Room::filter(['search' => $this->search])
+                         ->latest()
+                         ->paginate(10)
         ])->layoutData(['title' => 'Room Dashboard | Hollux']);
     }
 
     public function mount()
     {
-
-        $this->fill(['selectedRoom' => Room::first()]);
+        $this->selectedRoom = Room::first() ?? new Room();
     }
 
     public function show(Room $room)
@@ -45,13 +47,25 @@ class Index extends Component
 
     public function destroy()
     {
-        Storage::delete($this->selectedRoom->image);
-        $this->selectedRoom->delete();
-        $this->dispatchBrowserEvent('room:deleted');
+        try {
+            DB::beginTransaction();
+            
+            if ($this->selectedRoom->image && Storage::exists('public/'.$this->selectedRoom->image)) {
+                Storage::delete('public/'.$this->selectedRoom->image);
+            }
+            
+            $this->selectedRoom->delete();
+            DB::commit();
+            
+            $this->dispatchBrowserEvent('room:deleted');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->dispatchBrowserEvent('error', ['message' => 'Failed to delete room']);
+        }
     }
 
     public function cancel()
     {
-        $this->fill(['selectedRoom' => Room::first()]);
+        $this->selectedRoom = Room::first() ?? new Room();
     }
 }

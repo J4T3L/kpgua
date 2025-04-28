@@ -70,7 +70,7 @@ class Edit extends Component
         $validatedData = $this->validate($rules);
 
         if ($this->image) {
-            $validatedData['image'] = $this->image->store('img/rooms');
+            $validatedData['image'] = $this->image->store('img/rooms', 'public');
             Storage::delete($this->room->image);
         }
 

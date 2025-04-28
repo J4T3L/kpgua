@@ -30,7 +30,7 @@ class Create extends Component
             'image' => ['required', 'image', 'max:2084'],
         ]);
 
-        $validatedData['image'] = $this->image->store('img/facilities');
+        $validatedData['image'] = $this->image->store('img/facilities', 'public');
         $validatedData['code'] = bin2hex(random_bytes(20));
 
         Facility::create($validatedData);
