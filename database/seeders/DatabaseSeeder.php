@@ -2,32 +2,30 @@
 
 namespace Database\Seeders;
 
-use App\Models\RoomReview;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call([
-            GalerySeeder::class,
-            FacilitySeeder::class,
-            RoomSeeder::class,
-            RoomHasFacilitySeeder::class,
-            AboutSeeder::class,
-            RoleSeeder::class,
-            UserSeeder::class,
-            AdminSeeder::class,
-            ReceptionistSeeder::class,
-            RoomReviewSeeder::class,
-            FacilityReviewSeeder::class,
-            ReservationSeeder::class
+            AboutsTableSeeder::class,
+            FacilitiesTableSeeder::class,
+            FacilityReviewsTableSeeder::class,
+            GaleriesTableSeeder::class,
+            ReservationsTableSeeder::class,
+            RolesTableSeeder::class,
+            PermissionsTableSeeder::class,
+            ModelHasRolesTableSeeder::class,
+            RoleHasPermissionsTableSeeder::class,
+            RoomHasFacilitiesTableSeeder::class,
+            RoomReviewsTableSeeder::class,
+            RoomsTableSeeder::class,
+            UsersTableSeeder::class,
         ]);
+        $this->call(UsersTableSeeder::class);
     }
 }
