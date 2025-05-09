@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +12,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('room_has_facilities', function (Blueprint $table) {
+        Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('room_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('facility_code');
-            $table->foreign('facility_code')->references('code')->on('facilities')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('code')->unique(); // kode unik untuk room
+            $table->string('name');
+            $table->enum('type', ['villa', 'kos', 'rumah']); // jenis properti
+            $table->text('description');
+            $table->integer('total_rooms');
+            $table->integer('available'); // jumlah yang masih tersedia
+            $table->unsignedBigInteger('price'); // harga per malam/bulan
+            $table->text('explanation');
+            $table->string('image'); // path gambar
             $table->timestamps();
         });
     }
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('room_has_facilities');
+        Schema::dropIfExists('rooms');
     }
 };

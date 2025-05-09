@@ -10,6 +10,10 @@
                     <span class="text-sm capitalize">{{ $room->views }}</span>
                 </div>
                 <div class="flex items-center gap-1 text-gray-800">
+                    <i class=''></i>
+                    <span class="text-sm capitalize">{{ $room->type }}</span>
+                </div>
+                <div class="flex items-center gap-1 text-gray-800">
                     <i class='bx bx-star'></i>
                     <span class="text-sm capitalize">{{ $room->rate }}</span>
                 </div>

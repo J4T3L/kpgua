@@ -4,17 +4,6 @@ use App\Http\Livewire\Dashboard\Receptionist\Reservation\Proof as ReservationPro
 use App\Http\Livewire\Dashboard\User\Reservation\Proof;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::namespace('App\Http\Livewire')->group(function () {
     //? Routes that can be accessed only when logging in
     Route::middleware(['verified'])->group(function () {
@@ -53,20 +42,21 @@ Route::namespace('App\Http\Livewire')->group(function () {
                 //? Displays data statistics
                 Route::get('/', Index::class)->name('index');
 
+
                 Route::prefix('/reservation')->namespace('Reservation')->name('reservations.')->group(function () {
                     Route::get('/', Index::class)->name('index');
                     Route::get('/proof/{reservation:code}', [Proof::class, 'render'])->name('proof');
                 });
 
-                    Route::prefix('/reviews')->namespace('Review')->name('reviews.')->group(function () {
-                        Route::namespace('Room')->group(function () {
-                            Route::get('/rooms', Index::class)->name('rooms.index');
-                        });
-
-                        Route::namespace('Facility')->group(function () {
-                            Route::get('/facilities', Index::class)->name('facilities.index');
-                        });
+                Route::prefix('/reviews')->namespace('Review')->name('reviews.')->group(function () {
+                    Route::namespace('Room')->group(function () {
+                        Route::get('/rooms', Index::class)->name('rooms.index');
                     });
+
+                    Route::namespace('Facility')->group(function () {
+                        Route::get('/facilities', Index::class)->name('facilities.index');
+                    });
+                });
             });
 
             //? Route for receptionist dashboard page

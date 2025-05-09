@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AboutsTableSeeder::class,
             FacilitiesTableSeeder::class,
-            //FacilityReviewsTableSeeder::class,
+            FacilityReviewsTableSeeder::class,
             GaleriesTableSeeder::class,
            // ReservationsTableSeeder::class,
             RolesTableSeeder::class,
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             ModelHasRolesTableSeeder::class,
             RoleHasPermissionsTableSeeder::class,
             RoomHasFacilitiesTableSeeder::class,
-           // RoomReviewsTableSeeder::class,
+            //RoomReviewsTableSeeder::class,
             RoomsTableSeeder::class,
             UsersTableSeeder::class,
         ]);

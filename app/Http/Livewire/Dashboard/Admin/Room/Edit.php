@@ -15,6 +15,7 @@ class Edit extends Component
 
     public $room;
     public $name;
+    public $type; // ➕ Tambahkan properti type
     public $total_rooms;
     public $description;
     public $price;
@@ -36,6 +37,7 @@ class Edit extends Component
             'room' => $room,
             'roomFacilities' => $room->facilities->pluck('facility_code')->toArray(),
             'name' => $room->name,
+            'type' => $room->type, // ➕ Ambil type dari room
             'price' => $room->price,
             'total_rooms' => $room->total_rooms,
             'description' => $room->description,
@@ -54,9 +56,10 @@ class Edit extends Component
     }
 
     public function update()
-    { 
+    {
         $rules = [
             'name' => ['required'],
+            'type' => ['required', 'in:villa,kos,rumah'], // ➕ Validasi untuk type
             'description' => ['required'],
             'total_rooms' => ['required', 'numeric'],
             'price' => ['required', 'numeric'],
@@ -71,11 +74,13 @@ class Edit extends Component
 
         if ($this->image) {
             $validatedData['image'] = $this->image->store('img/rooms', 'public');
-            Storage::delete($this->room->image);
+            Storage::delete($this->room->image); // Hapus gambar lama
         }
 
+        // Update room termasuk type
         $this->room->update($validatedData);
 
+        // Hapus fasilitas lama dan tambahkan yang baru
         RoomHasFacility::where('room_id', $this->room->id)->delete();
 
         if (count(array_filter($this->selectedFacilities))) {
@@ -83,6 +88,7 @@ class Edit extends Component
                 RoomHasFacility::create([
                     'room_id' => $this->room->id,
                     'facility_code' => $facility
+                    
                 ]);
             }
         }

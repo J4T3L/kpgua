@@ -12,6 +12,20 @@
                     <span class="invalid">{{ $message }}</span>
                 @enderror
             </div>
+            <!-- tyoe  -->
+            <div class="form-control">
+    <label class="label" for="type">Type</label>
+    <select wire:model="type" id="type" name="type" class="input">
+        <option value="">-- Choose Type --</option>
+        <option value="villa">Villa</option>
+        <option value="kos">Kos</option>
+        <option value="rumah">Rumah</option>
+    </select>
+    @error('type')
+        <span class="invalid">{{ $message }}</span>
+    @enderror
+</div>
+<!-- end -->
             <div class="form-control">
                 <label class="label" for="total_rooms">Total Rooms</label>
                 <input wire:model='total_rooms' class="input" type="number" name="total_rooms" id="total_rooms">

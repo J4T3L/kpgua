@@ -13,6 +13,7 @@ class Create extends Component
     use WithFileUploads;
 
     public $name;
+    public $type; // ➕ Tambahkan ini
     public $total_rooms;
     public $description;
     public $price;
@@ -23,7 +24,7 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.dashboard.admin.room.create')->layoutData(['title' => 'New Room | Hollux']);
+        return view('livewire.dashboard.admin.room.create')->layoutData(['title' => 'New Room']);
     }
 
     public function mount()
@@ -36,6 +37,7 @@ class Create extends Component
     {
         $validatedData = $this->validate([
             'name' => ['required'],
+            'type' => ['required', 'in:villa,kos,rumah'], // ➕ Validasi type
             'description' => ['required'],
             'total_rooms' => ['required', 'numeric'],
             'price' => ['required', 'numeric'],
@@ -43,20 +45,17 @@ class Create extends Component
             'image' => ['required', 'image', 'max:2084'],
         ]);
 
-            // Simpan ke public storage
         $validatedData['image'] = $this->image->store('img/rooms', 'public');
         $validatedData['code'] = bin2hex(random_bytes(20));
         $validatedData['available'] = $this->total_rooms;
 
-        $roomId = Room::create($validatedData);
+        $room = Room::create($validatedData);
 
-        if (count(array_filter($this->selectedFacilities))) {
-            foreach (array_filter($this->selectedFacilities) as $facility) {
-                RoomHasFacility::create([
-                    'room_id' => $roomId->id,
-                    'facility_code' => $facility
-                ]);
-            }
+        foreach (array_filter($this->selectedFacilities) as $facility) {
+            RoomHasFacility::create([
+                'room_id' => $room->id,
+                'facility_code' => $facility
+            ]);
         }
 
         $this->dispatchBrowserEvent('room:created');
@@ -65,7 +64,9 @@ class Create extends Component
 
     public function resetAll()
     {
-        $this->reset(['name', 'total_rooms', 'description', 'price', 'explanation', 'image']);
+        $this->reset([
+            'name', 'type', 'total_rooms', 'description', 'price', 'explanation', 'image'
+        ]);
         $this->fill(['selectedFacilities' => array_fill_keys($this->facilities->pluck('code')->toArray(), false)]);
     }
 }
